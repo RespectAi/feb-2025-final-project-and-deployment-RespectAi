@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - TechMobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav id="main-navbar" class="bg-white/70 backdrop-blur-lg shadow-lg sticky top-0 z-50 transition-all duration-300 h-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-indigo-600">TechMobile</a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 h-full items-center ml-auto mr-8">
+                    <a href="index.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Home</a>
+                    <a href="products.html" class="text-indigo-600 px-3 py-2 text-base font-medium">Products</a>
+                    <a href="deals.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Deals</a>
+                    <a href="about.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Contact</a>
+                </div>
+                
+                <!-- Cart & Mobile Menu Button -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button onclick="toggleCart()" class="text-gray-700 hover:text-indigo-600">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        </button>
+                    </div>
+                    <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-indigo-600 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">Home</a>
+                <a href="products.html" class="text-indigo-600 block px-3 py-2 text-base font-medium">Products</a>
+                <a href="deals.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">Deals</a>
+                <a href="about.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">About</a>
+                <a href="contact.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-4">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-xl font-bold text-gray-800">Your Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="py-4 space-y-4">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+            
+            <div class="border-t pt-4">
+                <div class="flex justify-between mb-4">
+                    <span class="font-semibold">Subtotal:</span>
+                    <span id="cart-subtotal" class="font-bold">$0.00</span>
+                </div>
+                <button onclick="window.location.href='checkout.html'" class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition duration-300">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="toggleCart()"></div>
+
+    <!-- Main Content -->
+    <main class="page-transition">
+        <!-- Hero Section -->
+        <section class="hero-gradient text-white py-20" style="background-image: url('https://i.ytimg.com/vi/5KJXS_RXN6c/maxresdefault.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 text-shadow">Our Products</h1>
+                    <p class="text-2xl md:text-3xl max-w-3xl mx-auto text-shadow">Discover our wide range of premium tech gadgets and accessories.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters and Search -->
+        <section class="bg-white py-6 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="flex space-x-4">
+                        <button class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300">All Products</button>
+                        <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Smartphones</button>
+                        <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Tablets</button>
+                        <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Accessories</button>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search products..." class="pl-10 pr-16 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        <button id="searchButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 transition duration-300 flex items-center">
+                            <span id="searchButtonText">Search</span>
+                            <div id="searchSpinner" class="hidden ml-2">
+                                <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Grid -->
+        <section class="py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="products-container" style="overflow: hidden;">
+                    <div class="products-grid" style="display: flex; transition: transform 0.5s ease-in-out;">
+                        <!-- First Subsection (Products 1-4) -->
+                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                            <!-- Product 1 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1367&q=80" alt="iPhone 14 Pro" class="w-full h-48 object-cover">
+                                    <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">NEW</div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">iPhone 14 Pro</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(48 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$999.00</span>
+                                        <button onclick="addToCart('iPhone 14 Pro', 999, 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1367&q=80')" class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 2 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <div class="relative">
+                                    <img src="https://files.refurbed.com/ii/samsung-galaxy-s23-ultra-1698391351.jpg" alt="Samsung Galaxy S23 Ultra" class="w-full h-48 object-cover">
+                                    <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">BESTSELLER</div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Samsung Galaxy S23 Ultra</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(112 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$1,199.00</span>
+                                        <button onclick="addToCart('Samsung Galaxy S23 Ultra', 1199, 'https://files.refurbed.com/ii/samsung-galaxy-s23-ultra-1698391351.jpg')" class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 3 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1434&q=80" alt="Google Pixel 7 Pro" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Google Pixel 7 Pro</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(89 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$899.00</span>
+                                        <button onclick="addToCart('Google Pixel 7 Pro', 899, 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1434&q=80')" class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 4 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="iPad Pro" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">iPad Pro 12.9"</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(67 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$1,099.00</span>
+                                        <button onclick='addToCart("iPad Pro 12.9\"", 1099, "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Second Subsection (Products 5-8) -->
+                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                            <!-- Product 5 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://m.media-amazon.com/images/I/61FSdNdMT6L._AC_SL1500_.jpg" alt="smartwatch" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Smartwatch</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(51 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$149.00</span>
+                                        <button onclick='addToCart("Smartwatch", 149, "https://m.media-amazon.com/images/I/61FSdNdMT6L._AC_SL1500_.jpg")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 6 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://th.bing.com/th/id/OIP.F7IFEK85RhyLefOGx3SAmwHaEK?cb=iwp2&rs=1&pid=ImgDetMain" alt="iPad Air 5" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">iPad Air 5</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(123 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$1,299.00</span>
+                                        <button onclick='addToCart("iPad Air 5", 1299, "https://th.bing.com/th/id/OIP.F7IFEK85RhyLefOGx3SAmwHaEK?cb=iwp2&rs=1&pid=ImgDetMain")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 7 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://images.hindustantimes.com/tech/img/2024/07/19/414x233/12_R_1_1707302526013_1721365908825.png" alt="OnePlus 13r" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">OnePlus 13r</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(51 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$349.00</span>
+                                        <button onclick='addToCart("OnePlus 13r", 349, "https://images.hindustantimes.com/tech/img/2024/07/19/414x233/12_R_1_1707302526013_1721365908825.png")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 8 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://th.bing.com/th/id/OIP.yLeCemH6lg0xbtHyP0XEJAHaE8?cb=iwp2&rs=1&pid=ImgDetMain" alt="Nothing Phone 3a Pro" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Nothing Phone 3a Pro</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(547 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$249.00</span>
+                                        <button onclick='addToCart("Nothing Phone 3a Pro", 249, "https://th.bing.com/th/id/OIP.yLeCemH6lg0xbtHyP0XEJAHaE8?cb=iwp2&rs=1&pid=ImgDetMain")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Third Subsection (Products 9-12) -->
+                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                            <!-- Product 9 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://photos5.appleinsider.com/gallery/61288-126615-60842-125275-60106-123358-60078-123295-59304-121043-000-lede-M4-MacBook-Pro-xl-xl-xl-xl-xl.jpg" alt="MacBook Pro M4" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">MacBook Pro M4</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(205 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$3,350.00</span>
+                                        <button onclick='addToCart("MacBook Pro M4", 3350, "https://photos5.appleinsider.com/gallery/61288-126615-60842-125275-60106-123358-60078-123295-59304-121043-000-lede-M4-MacBook-Pro-xl-xl-xl-xl-xl.jpg")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 10 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://th.bing.com/th/id/OIP.lC0qLmupDSWR2lyxg8gJ0gHaEK?cb=iwp2&rs=1&pid=ImgDetMain" alt="EliteBook Ultra 14" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">EliteBook Ultra 14</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(78 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$1,249.00</span>
+                                        <button onclick='addToCart("EliteBook Ultra 14", 1249, "https://th.bing.com/th/id/OIP.lC0qLmupDSWR2lyxg8gJ0gHaEK?cb=iwp2&rs=1&pid=ImgDetMain")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 11 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://th.bing.com/th/id/OIP.hxihCxQ9ERDE85ktzpLrCwHaEK?cb=iwp2&rs=1&pid=ImgDetMain" alt="Asus ROG 9 Pro" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Asus ROG 9 Pro</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(56 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$1,449.00</span>
+                                        <button onclick='addToCart("Asus ROG 9 Pro", 1449, "https://th.bing.com/th/id/OIP.hxihCxQ9ERDE85ktzpLrCwHaEK?cb=iwp2&rs=1&pid=ImgDetMain")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 12 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
+                                <img src="https://specs-arena.com/wp-content/uploads/2023/11/Nubia-Red-Magic-9-Pro-600x600.webp" alt="RedMagic 10 Pro" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">RedMagic 10 Pro</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(67 reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-lg">$1,399.00</span>
+                                        <button onclick='addToCart("RedMagic 10 Pro", 1399, "https://specs-arena.com/wp-content/uploads/2023/11/Nubia-Red-Magic-9-Pro-600x600.webp")' class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-12 flex justify-center">
+                    <nav class="flex items-center space-x-4">
+                        <button onclick="changePage('prev')" class="text-gray-700 hover:text-indigo-600 transition duration-300">
+                            <i class="fas fa-chevron-left text-xl"></i>
+                        </button>
+                        <div class="flex space-x-2">
+                            <button onclick="changePage(1)" class="px-3 py-1 rounded-lg bg-indigo-600 text-white">1</button>
+                            <button onclick="changePage(2)" class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">2</button>
+                            <button onclick="changePage(3)" class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">3</button>
+                        </div>
+                        <button onclick="changePage('next')" class="text-gray-700 hover:text-indigo-600 transition duration-300">
+                            <i class="fas fa-chevron-right text-xl"></i>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">TechMobile</h3>
+                    <p class="text-gray-400">Your trusted destination for premium tech gadgets and exceptional service.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="products.html" class="text-gray-400 hover:text-white">Products</a></li>
+                        <li><a href="deals.html" class="text-gray-400 hover:text-white">Deals</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Shipping</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 TechMobile. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        let lastScrollY = window.scrollY;
+        const navbar = document.getElementById('main-navbar');
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    if (window.scrollY > lastScrollY && window.scrollY > 80) {
+                        navbar.style.opacity = '0';
+                        navbar.style.pointerEvents = 'none';
+                    } else {
+                        navbar.style.opacity = '1';
+                        navbar.style.pointerEvents = 'auto';
+                    }
+                    lastScrollY = window.scrollY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Product grid sliding functionality
+        const productsGrid = document.querySelector('.products-grid');
+        const subsections = document.querySelectorAll('.product-subsection');
+        const pageButtons = document.querySelectorAll('.pagination .flex.space-x-2 button');
+        let currentPage = 1;
+        const totalPages = subsections.length;
+        let autoSlideInterval;
+        let userInteractionTimeout;
+
+        function updatePaginationHighlight() {
+            pageButtons.forEach((button, index) => {
+                if (button.textContent === '←' || button.textContent === '→') return;
+                if (parseInt(button.textContent) === currentPage) {
+                    button.classList.remove('bg-gray-100', 'text-gray-700');
+                    button.classList.add('bg-indigo-600', 'text-white');
+                } else {
+                    button.classList.remove('bg-indigo-600', 'text-white');
+                    button.classList.add('bg-gray-100', 'text-gray-700');
+                }
+            });
+        }
+
+        function startAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(() => {
+                changePage('next');
+            }, 5000);
+        }
+
+        function handleUserInteraction() {
+            clearTimeout(userInteractionTimeout);
+            clearInterval(autoSlideInterval);
+            
+            userInteractionTimeout = setTimeout(() => {
+                startAutoSlide();
+            }, 7000);
+        }
+
+        function changePage(page) {
+            if (page === 'prev') {
+                currentPage = currentPage === 1 ? totalPages : currentPage - 1;
+            } else if (page === 'next') {
+                currentPage = currentPage === totalPages ? 1 : currentPage + 1;
+            } else {
+                currentPage = page;
+            }
+
+            // Update grid position
+            productsGrid.style.transform = `translateX(-${(currentPage - 1) * 100}%)`;
+            
+            // Update pagination highlight
+            updatePaginationHighlight();
+            
+            // Handle user interaction
+            handleUserInteraction();
+        }
+
+        // Initialize auto-slide
+        startAutoSlide();
+
+        // Pause auto-slide on hover
+        productsGrid.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+
+        productsGrid.addEventListener('mouseleave', () => {
+            handleUserInteraction();
+        });
+
+        // Add click event listeners to pagination buttons
+        document.querySelectorAll('.pagination button').forEach(button => {
+            button.addEventListener('click', () => {
+                const page = button.textContent;
+                if (page === '←') {
+                    changePage('prev');
+                } else if (page === '→') {
+                    changePage('next');
+                } else {
+                    changePage(parseInt(page));
+                }
+            });
+        });
+
+        // Cart functionality
+        function addToCart(name, price, image) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name, price, image });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-0';
+            notification.textContent = `${name} added to cart!`;
+            document.body.appendChild(notification);
+
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateY(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const searchButtonText = document.getElementById('searchButtonText');
+        const searchSpinner = document.getElementById('searchSpinner');
+        const productCards = document.querySelectorAll('.product-card');
+        const productSubsections = document.querySelectorAll('.product-subsection');
+
+        function setSearching(isSearching) {
+            if (isSearching) {
+                searchButton.disabled = true;
+                searchButtonText.textContent = 'Searching';
+                searchSpinner.classList.remove('hidden');
+            } else {
+                searchButton.disabled = false;
+                searchButtonText.textContent = 'Search';
+                searchSpinner.classList.add('hidden');
+            }
+        }
+
+        async function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                // If search is empty, show all products and restore original layout
+                const productsGrid = document.querySelector('.products-grid');
+                productsGrid.innerHTML = '';
+                productSubsections.forEach(subsection => {
+                    productsGrid.appendChild(subsection.cloneNode(true));
+                });
+                document.querySelector('.pagination').style.display = 'flex';
+                startAutoSlide();
+                return;
+            }
+
+            setSearching(true);
+
+            // Clear any existing auto-slide intervals
+            clearInterval(autoSlideInterval);
+            
+            // Hide pagination during search
+            document.querySelector('.pagination').style.display = 'none';
+
+            // Simulate a small delay to show the loading state
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Create a new subsection for search results
+            const searchResultsSubsection = document.createElement('div');
+            searchResultsSubsection.className = 'product-subsection';
+            searchResultsSubsection.style.width = '100%';
+            searchResultsSubsection.style.flexShrink = '0';
+            searchResultsSubsection.style.display = 'grid';
+            searchResultsSubsection.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            searchResultsSubsection.style.gap = '2rem';
+
+            let hasResults = false;
+
+            // Search through all products
+            productCards.forEach(card => {
+                const productName = card.querySelector('h3').textContent.toLowerCase();
+                const productDescription = card.querySelector('.text-gray-600')?.textContent.toLowerCase() || '';
+                
+                if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
+                    // Clone the matching product card
+                    const clonedCard = card.cloneNode(true);
+                    searchResultsSubsection.appendChild(clonedCard);
+                    hasResults = true;
+                }
+            });
+
+            // Clear existing products grid and add search results
+            const productsGrid = document.querySelector('.products-grid');
+            productsGrid.innerHTML = '';
+            
+            if (hasResults) {
+                productsGrid.appendChild(searchResultsSubsection);
+            } else {
+                // Show "No results found" message
+                const noResultsSubsection = document.createElement('div');
+                noResultsSubsection.className = 'product-subsection';
+                noResultsSubsection.style.width = '100%';
+                noResultsSubsection.style.flexShrink = '0';
+                noResultsSubsection.style.display = 'flex';
+                noResultsSubsection.style.justifyContent = 'center';
+                noResultsSubsection.style.alignItems = 'center';
+                noResultsSubsection.style.height = '200px';
+                noResultsSubsection.innerHTML = `
+                    <div class="text-center">
+                        <h3 class="text-xl font-semibold text-gray-700">No products found</h3>
+                        <p class="text-gray-500 mt-2">Try different keywords or browse all products</p>
+                    </div>
+                `;
+                productsGrid.appendChild(noResultsSubsection);
+            }
+
+            setSearching(false);
+        }
+
+        // Add event listeners for search
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Add clear search functionality
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value === '') {
+                // Reset to original view
+                const productsGrid = document.querySelector('.products-grid');
+                productsGrid.innerHTML = '';
+                productSubsections.forEach(subsection => {
+                    productsGrid.appendChild(subsection.cloneNode(true));
+                });
+                // Show pagination and resume auto-slide
+                document.querySelector('.pagination').style.display = 'flex';
+                startAutoSlide();
+            }
+        });
+    </script>
+</body>
+</html> 
