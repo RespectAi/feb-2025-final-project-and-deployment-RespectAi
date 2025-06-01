@@ -235,11 +235,11 @@
                         <!-- Product 2 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
                             <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Samsung Galaxy S23 Ultra" class="w-full h-48 object-cover">
+                                <img src="https://tse2.mm.bing.net/th/id/OIP.D_-5L3y4T4zxdmjmf5-I6wHaHa?rs=1&pid=ImgDetMain" alt="Samsung Galaxy S25 Ultra" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">BESTSELLER</div>
                             </div>
                             <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-1">Samsung Galaxy S23 Ultra</h3>
+                                <h3 class="font-semibold text-lg mb-1">Samsung Galaxy S25 Ultra</h3>
                                 <div class="flex items-center mb-2">
                                     <div class="flex text-yellow-400">
                                         <i class="fas fa-star"></i>
@@ -251,8 +251,8 @@
                                     <span class="text-gray-600 text-sm ml-2">(112 reviews)</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="font-bold text-lg">$1,199.00</span>
-                                    <button onclick="addToCart('Samsung Galaxy S23 Ultra', 1199, 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')" class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                    <span class="font-bold text-lg">$1,299.00</span>
+                                    <button onclick="addToCart('Samsung Galaxy S25 Ultra', 1299, 'https://tse2.mm.bing.net/th/id/OIP.D_-5L3y4T4zxdmjmf5-I6wHaHa?rs=1&pid=ImgDetMain')" class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
@@ -1078,7 +1078,7 @@
                     <h4 class="font-semibold mb-4">Support</h4>
                     <ul class="space-y-2">
                         <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="contact.html#faq" class="text-gray-400 hover:text-white">FAQs</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white">Shipping</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
                     </ul>
@@ -1136,8 +1136,18 @@
         document.getElementById('mobile-menu').classList.toggle('hidden');
     });
 
-    // Cart Functionality (from deepsite.html)
-    let cartItems = [];
+    // Cart Functionality
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Update cart count on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCartCount();
+    });
+    
+    function updateCartCount() {
+        const cartCount = document.getElementById('cart-count');
+        cartCount.textContent = cartItems.length;
+    }
     
     function toggleCart() {
         document.getElementById('cart-sidebar').classList.toggle('translate-x-full');
@@ -1145,7 +1155,95 @@
     }
     
     function addToCart(name, price, image) {
-        // ... rest of cart logic from deepsite.html
+        // Add item to cart array
+        cartItems.push({ name, price, image });
+        
+        // Save to localStorage
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        
+        // Update cart count
+        updateCartCount();
+        
+        // Show notification
+        const notification = document.createElement('div');
+        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-0';
+        notification.textContent = `${name} added to cart!`;
+        document.body.appendChild(notification);
+
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+        
+        // Only show cart sidebar on home page
+        if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+            updateCartSidebar();
+            document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+            document.getElementById('cart-overlay').classList.remove('hidden');
+        }
+    }
+
+    function updateCartSidebar() {
+        const cartSidebar = document.getElementById('cart-sidebar');
+        let total = 0;
+        
+        // Calculate total and create cart items HTML
+        const cartItemsHTML = cartItems.map((item, index) => {
+            total += item.price;
+            return `
+                <div class="p-4 border-b">
+                    <div class="flex items-center">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                        <div class="ml-4 flex-1">
+                            <h3 class="font-semibold">${item.name}</h3>
+                            <p class="text-gray-600">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Update cart sidebar content
+        cartSidebar.innerHTML = `
+            <div class="p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Shopping Cart</h2>
+                    <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                ${cartItems.length === 0 ? '<p class="text-center text-gray-500 py-4">Your cart is empty</p>' : cartItemsHTML}
+                ${cartItems.length > 0 ? `
+                    <div class="border-t mt-4 pt-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-semibold">Total:</span>
+                            <span class="font-bold">$${total.toFixed(2)}</span>
+                        </div>
+                        <button onclick="checkout()" class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition duration-300">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    function removeFromCart(index) {
+        cartItems.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        updateCartCount();
+        updateCartSidebar();
+    }
+
+    function checkout() {
+        // Redirect to checkout page
+        window.location.href = 'checkout.html';
     }
 
     // Hero Slideshow

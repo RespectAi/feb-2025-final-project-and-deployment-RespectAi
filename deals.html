@@ -19,12 +19,12 @@
                 </div>
                 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8 h-full items-center">
-                    <a href="index.html" class="text-indigo-600 px-3 py-2 text-sm font-medium">Home</a>
-                    <a href="products.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Products</a>
-                    <a href="deals.html" class="text-indigo-600 px-3 py-2 text-sm font-medium">Deals</a>
-                    <a href="about.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium">About</a>
-                    <a href="contact.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Contact</a>
+                <div class="hidden md:flex space-x-8 h-full items-center ml-auto mr-8">
+                    <a href="index.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Home</a>
+                    <a href="products.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Products</a>
+                    <a href="deals.html" class="text-indigo-600 px-3 py-2 text-base font-medium">Deals</a>
+                    <a href="about.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Contact</a>
                 </div>
                 
                 <!-- Cart & Mobile Menu Button -->
@@ -84,7 +84,7 @@
     <!-- Main Content -->
     <main class="page-transition">
         <!-- Hero Section -->
-        <section class="hero-gradient text-white py-20" style="background-image: url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1470&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <section class="hero-gradient text-white py-20" style="background-image: url('https://sundayguardianlive.com/wp-content/uploads/2018/10/Untitled-1.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
                     <h1 class="text-4xl md:text-5xl font-bold mb-4">Special Deals & Offers</h1>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="flex items-center space-x-2">
                         <span>Ends in:</span>
-                        <div class="bg-white text-red-600 px-2 py-1 rounded font-bold">23:59:59</div>
+                        <div id="countdown" class="bg-white text-red-600 px-2 py-1 rounded font-bold">24:00:00</div>
                     </div>
                 </div>
             </div>
@@ -117,19 +117,19 @@
                     <!-- Deal 1 -->
                     <div class="bg-white rounded-lg overflow-hidden shadow-lg">
                         <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1367&q=80" alt="iPhone 14 Pro" class="w-full h-64 object-cover">
+                            <img src="https://tse2.mm.bing.net/th/id/OIP.JKMlNKauPLnPiMBaiEoiJAAAAA?rs=1&pid=ImgDetMain" alt="iPhone 16 Pro Max" class="w-full h-64 object-cover">
                             <div class="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full font-bold">
                                 30% OFF
                             </div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-2xl font-bold mb-2">iPhone 14 Pro</h3>
+                            <h3 class="text-2xl font-bold mb-2">iPhone 16 Pro Max</h3>
                             <div class="flex items-center mb-4">
-                                <span class="text-gray-500 line-through text-lg mr-4">$999.00</span>
-                                <span class="text-red-600 text-2xl font-bold">$699.00</span>
+                                <span class="text-gray-500 line-through text-lg mr-4">$1,799.00</span>
+                                <span class="text-red-600 text-2xl font-bold">$1,499.00</span>
                             </div>
                             <p class="text-gray-600 mb-4">Limited time offer on the latest iPhone. Includes free AirPods Pro and 1 year of AppleCare+.</p>
-                            <button onclick="addToCart('iPhone 14 Pro', 699, 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1367&q=80')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
+                            <button onclick="addToCart('iPhone 16 Pro Max', 1499, 'https://tse2.mm.bing.net/th/id/OIP.JKMlNKauPLnPiMBaiEoiJAAAAA?rs=1&pid=ImgDetMain')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
                                 Add to Cart
                             </button>
                         </div>
@@ -138,19 +138,61 @@
                     <!-- Deal 2 -->
                     <div class="bg-white rounded-lg overflow-hidden shadow-lg">
                         <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Samsung Galaxy S23 Ultra" class="w-full h-64 object-cover">
+                            <img src="https://tse2.mm.bing.net/th/id/OIP.u6JSxCe6f-0vUKiy0lvqygHaD4?rs=1&pid=ImgDetMain" alt="Samsung Galaxy S25 Ultra" class="w-full h-64 object-cover">
                             <div class="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full font-bold">
                                 25% OFF
                             </div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-2xl font-bold mb-2">Samsung Galaxy S23 Ultra</h3>
+                            <h3 class="text-2xl font-bold mb-2">Samsung Galaxy S25 Ultra</h3>
                             <div class="flex items-center mb-4">
-                                <span class="text-gray-500 line-through text-lg mr-4">$1,199.00</span>
-                                <span class="text-red-600 text-2xl font-bold">$899.00</span>
+                                <span class="text-gray-500 line-through text-lg mr-4">$1,500.00</span>
+                                <span class="text-red-600 text-2xl font-bold">$1,299.00</span>
                             </div>
                             <p class="text-gray-600 mb-4">Get the latest Samsung flagship with free Galaxy Buds2 Pro and 1 year of Samsung Care+.</p>
-                            <button onclick="addToCart('Samsung Galaxy S23 Ultra', 899, 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
+                            <button onclick="addToCart('Samsung Galaxy S23 Ultra', 1299, 'https://tse2.mm.bing.net/th/id/OIP.u6JSxCe6f-0vUKiy0lvqygHaD4?rs=1&pid=ImgDetMain')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Deal 3 (New) -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWP22?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1591634795000" alt="AirPods Pro" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full font-bold">
+                                20% OFF
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">AirPods Pro</h3>
+                            <div class="flex items-center mb-4">
+                                <span class="text-gray-500 line-through text-lg mr-4">$249.00</span>
+                                <span class="text-red-600 text-2xl font-bold">$199.00</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Active Noise Cancellation, Transparency mode, and Spatial Audio with dynamic head tracking.</p>
+                            <button onclick="addToCart('AirPods Pro', 199, 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWP22?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1591634795000')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Deal 4 (New) -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.GG1s8wdgO95ummveuYh2YgHaEK?rs=1&pid=ImgDetMain" alt="Samsung Galaxy Buds3 Pro" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full font-bold">
+                                15% OFF
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Samsung Galaxy Buds3 Pro</h3>
+                            <div class="flex items-center mb-4">
+                                <span class="text-gray-500 line-through text-lg mr-4">$300.00</span>
+                                <span class="text-red-600 text-2xl font-bold">$249.00</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Intelligent Active Noise Cancellation, Hi-Fi sound quality, and IPX7 water resistance.</p>
+                            <button onclick="addToCart('Samsung Galaxy Buds3 Pro', 249, 'https://tse1.mm.bing.net/th/id/OIP.GG1s8wdgO95ummveuYh2YgHaEK?rs=1&pid=ImgDetMain')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
                                 Add to Cart
                             </button>
                         </div>
@@ -209,7 +251,7 @@
                     <!-- Bundle 3 -->
                     <div class="bg-white rounded-lg overflow-hidden shadow-lg">
                         <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1367&q=80" alt="Samsung Bundle" class="w-full h-48 object-cover">
+                            <img src="https://tse2.mm.bing.net/th/id/OIP.Bx1Mje-PQDGkkH6ArtzqUwHaEK?rs=1&pid=ImgDetMain" alt="Samsung Bundle" class="w-full h-48 object-cover">
                             <div class="absolute top-4 left-4 bg-green-600 text-white px-4 py-2 rounded-full font-bold">
                                 SAVE $250
                             </div>
@@ -221,7 +263,7 @@
                                 <span class="text-gray-500 line-through text-lg mr-4">$1,649.00</span>
                                 <span class="text-green-600 text-2xl font-bold">$1,399.00</span>
                             </div>
-                            <button onclick="addToCart('Samsung Bundle', 1399, 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1367&q=80')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
+                            <button onclick="addToCart('Samsung Bundle', 1399, 'https://tse2.mm.bing.net/th/id/OIP.Bx1Mje-PQDGkkH6ArtzqUwHaEK?rs=1&pid=ImgDetMain')" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
                                 Add to Cart
                             </button>
                         </div>
@@ -268,7 +310,7 @@
                     <h4 class="font-semibold mb-4">Support</h4>
                     <ul class="space-y-2">
                         <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="contact.html#faq" class="text-gray-400 hover:text-white">FAQs</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white">Shipping</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
                     </ul>
@@ -298,26 +340,55 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="cart.js"></script>
     <script>
-    let lastScrollY = window.scrollY;
-    const navbar = document.getElementById('main-navbar');
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (window.scrollY > lastScrollY && window.scrollY > 80) {
-            navbar.style.opacity = '0';
-            navbar.style.pointerEvents = 'none';
-          } else {
-            navbar.style.opacity = '1';
-            navbar.style.pointerEvents = 'auto';
+        // Flash sale countdown
+        function updateCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            if (!countdownElement) return;
+
+            let [hours, minutes, seconds] = countdownElement.textContent.split(':').map(Number);
+            
+            setInterval(() => {
+                seconds--;
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                    if (minutes < 0) {
+                        minutes = 59;
+                        hours--;
+                        if (hours < 0) {
+                            hours = 23;
+                        }
+                    }
+                }
+                
+                countdownElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCountdown);
+
+        // Existing navbar scroll code
+        let lastScrollY = window.scrollY;
+        const navbar = document.getElementById('main-navbar');
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              if (window.scrollY > lastScrollY && window.scrollY > 80) {
+                navbar.style.opacity = '0';
+                navbar.style.pointerEvents = 'none';
+              } else {
+                navbar.style.opacity = '1';
+                navbar.style.pointerEvents = 'auto';
+              }
+              lastScrollY = window.scrollY;
+              ticking = false;
+            });
+            ticking = true;
           }
-          lastScrollY = window.scrollY;
-          ticking = false;
         });
-        ticking = true;
-      }
-    });
     </script>
 </body>
 </html> 
