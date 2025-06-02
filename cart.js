@@ -17,15 +17,17 @@ function updateCartCount() {
 function updateCartItems() {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartSubtotal = document.getElementById('cart-subtotal');
+    const cartTax = document.getElementById('cart-tax');
+    const cartTotal = document.getElementById('cart-total');
     
-    if (cartItemsContainer && cartSubtotal) {
+    if (cartItemsContainer) {
         cartItemsContainer.innerHTML = '';
         let subtotal = 0;
 
         cartItems.forEach((item, index) => {
             subtotal += item.price;
             const itemElement = document.createElement('div');
-            itemElement.className = 'flex items-center justify-between py-2';
+            itemElement.className = 'flex items-center justify-between py-2 border-b';
             itemElement.innerHTML = `
                 <div class="flex items-center space-x-4">
                     <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
@@ -41,7 +43,15 @@ function updateCartItems() {
             cartItemsContainer.appendChild(itemElement);
         });
 
-        cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        // Calculate totals
+        const tax = subtotal * 0.08; // 8% tax
+        const shipping = subtotal > 0 ? 10 : 0; // $10 shipping if there are items
+        const total = subtotal + tax + shipping;
+
+        // Update summary
+        if (cartSubtotal) cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        if (cartTax) cartTax.textContent = `$${tax.toFixed(2)}`;
+        if (cartTotal) cartTotal.textContent = `$${total.toFixed(2)}`;
     }
 }
 
@@ -83,17 +93,31 @@ function toggleCart() {
     const cartOverlay = document.getElementById('cart-overlay');
     
     if (cartSidebar && cartOverlay) {
-        const isOpen = cartSidebar.classList.contains('translate-x-0');
+        const isOpen = !cartSidebar.classList.contains('translate-x-full');
         
         if (isOpen) {
-            cartSidebar.classList.remove('translate-x-0');
             cartSidebar.classList.add('translate-x-full');
             cartOverlay.classList.add('hidden');
         } else {
             cartSidebar.classList.remove('translate-x-full');
-            cartSidebar.classList.add('translate-x-0');
             cartOverlay.classList.remove('hidden');
             updateCartItems();
         }
     }
-} 
+}
+
+function proceedToCheckout() {
+    // Hide cart sidebar
+    toggleCart();
+    
+    // Navigate to checkout page
+    window.location.href = 'checkout.html';
+}
+
+// Export functions for use in other files
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.toggleCart = toggleCart;
+window.updateCartCount = updateCartCount;
+window.updateCartItems = updateCartItems;
+window.proceedToCheckout = proceedToCheckout; 
