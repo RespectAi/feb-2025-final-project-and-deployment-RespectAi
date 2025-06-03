@@ -54,6 +54,21 @@
         </div>
     </nav>
 
+    <!-- Add this style block to ensure .hidden class works -->
+    <style>
+        .hidden {
+            display: none !important;
+        }
+        @media (min-width: 768px) {
+            .md\:flex {
+                display: flex !important;
+            }
+            .md\:hidden {
+                display: none !important;
+            }
+        }
+    </style>
+
     <!-- Shopping Cart Sidebar -->
     <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
         <div class="p-4">
@@ -503,8 +518,55 @@
         </div>
     </footer>
 
+    <!-- Move scripts to the end of body -->
     <script src="cart.js"></script>
     <script>
+        // Wait for DOM to be fully loaded
+        window.addEventListener('load', function() {
+            console.log('DOM fully loaded');
+            
+            // Get elements
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            console.log('Mobile menu button:', mobileMenuButton);
+            console.log('Mobile menu:', mobileMenu);
+
+            if (mobileMenuButton && mobileMenu) {
+                // Toggle menu on button click
+                mobileMenuButton.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent event from bubbling up
+                    console.log('Menu button clicked');
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    // Only close if menu is open and click is outside
+                    if (!mobileMenu.classList.contains('hidden') && 
+                        !mobileMenuButton.contains(e.target) && 
+                        !mobileMenu.contains(e.target)) {
+                        console.log('Clicking outside, closing menu');
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+
+                // Prevent clicks inside menu from closing it
+                mobileMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+
+                // Close menu on window resize
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth >= 768) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            } else {
+                console.error('Mobile menu elements not found');
+            }
+        });
+
         let lastScrollY = window.scrollY;
         const navbar = document.getElementById('main-navbar');
         let ticking = false;
@@ -884,32 +946,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             handleResponsiveLayout();
             // ... rest of your DOMContentLoaded code ...
-        });
-
-        // Mobile menu functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
-                });
-
-                // Close mobile menu when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                });
-
-                // Close mobile menu when window is resized to desktop size
-                window.addEventListener('resize', function() {
-                    if (window.innerWidth >= 768) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                });
-            }
         });
     </script>
 </body>
