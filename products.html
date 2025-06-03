@@ -98,19 +98,27 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div class="flex space-x-4">
-                        <button class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300">All Products</button>
+                        <button id="all-products-button" class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300">All Products</button>
                         <div class="relative group">
-                            <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300 flex items-center">
+                            <button id="smartphone-button" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300 flex items-center">
                                 Smartphones
                                 <i class="fas fa-chevron-down ml-2 text-sm"></i>
                             </button>
-                            <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">iPhone</a>
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Android</a>
+                            <div id="smartphone-dropdown" class="absolute left-0 mt-2 w-96 bg-white rounded-lg shadow-lg py-2 hidden z-50">
+                                <div class="grid grid-cols-2 gap-4 p-4">
+                                    <a href="#" class="flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">
+                                        <i class="fab fa-apple text-lg mr-2"></i>
+                                        <span>iPhone</span>
+                                    </a>
+                                    <a href="#" class="flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">
+                                        <i class="fab fa-android text-lg mr-2"></i>
+                                        <span>Android</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Tablets</button>
-                        <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Accessories</button>
+                        <button id="tablets-button" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Tablets</button>
+                        <button id="accessories-button" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Accessories</button>
                     </div>
                     <div class="relative">
                         <input type="text" id="searchInput" placeholder="Search products..." class="pl-10 pr-16 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent">
@@ -619,13 +627,14 @@
         const searchButton = document.getElementById('searchButton');
         const searchButtonText = document.getElementById('searchButtonText');
         const searchSpinner = document.getElementById('searchSpinner');
-        const productCards = document.querySelectorAll('.product-card');
-        const productSubsections = document.querySelectorAll('.product-subsection');
+        // Store original product subsections to restore later
+        const originalProductsGridHtml = document.querySelector('.products-grid').innerHTML;
+        const pagination = document.querySelector('.pagination');
 
         function setSearching(isSearching) {
             if (isSearching) {
                 searchButton.disabled = true;
-                searchButtonText.textContent = 'Searching';
+                searchButtonText.textContent = 'Searching...';
                 searchSpinner.classList.remove('hidden');
             } else {
                 searchButton.disabled = false;
@@ -636,77 +645,86 @@
 
         async function performSearch() {
             const searchTerm = searchInput.value.toLowerCase().trim();
-            
+            const productsGrid = document.querySelector('.products-grid');
+            const productCards = document.querySelectorAll('.product-card'); // Get all existing product cards
+
             if (searchTerm === '') {
-                // If search is empty, show all products and restore original layout
-                const productsGrid = document.querySelector('.products-grid');
-                productsGrid.innerHTML = '';
-                productSubsections.forEach(subsection => {
-                    productsGrid.appendChild(subsection.cloneNode(true));
-                });
-                document.querySelector('.pagination').style.display = 'flex';
-                startAutoSlide();
+                // If search is empty, restore original products and pagination
+                productsGrid.innerHTML = originalProductsGridHtml;
+                pagination.style.display = 'flex';
+                // Assuming startAutoSlide needs to be called to resume animation if pagination is shown
+                if (typeof startAutoSlide === 'function') { // Check if function exists
+                    startAutoSlide();
+                }
+                setSearching(false);
                 return;
             }
 
             setSearching(true);
 
-            // Clear any existing auto-slide intervals
-            clearInterval(autoSlideInterval);
+            // Clear any existing auto-slide intervals before search
+            if (typeof autoSlideInterval !== 'undefined') { // Check if variable exists
+                clearInterval(autoSlideInterval);
+            }
             
             // Hide pagination during search
-            document.querySelector('.pagination').style.display = 'none';
+            pagination.style.display = 'none';
 
             // Simulate a small delay to show the loading state
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Create a new subsection for search results
-            const searchResultsSubsection = document.createElement('div');
-            searchResultsSubsection.className = 'product-subsection';
-            searchResultsSubsection.style.width = '100%';
-            searchResultsSubsection.style.flexShrink = '0';
-            searchResultsSubsection.style.display = 'grid';
-            searchResultsSubsection.style.gridTemplateColumns = 'repeat(4, 1fr)';
-            searchResultsSubsection.style.gap = '2rem';
+            // Create a container for search results
+            const searchResultsContainer = document.createElement('div');
+            searchResultsContainer.className = 'product-subsection'; // Reuse subsection class for layout
+            searchResultsContainer.style.width = '100%';
+            searchResultsContainer.style.flexShrink = '0';
+            searchResultsContainer.style.display = 'grid';
+            searchResultsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))'; // Use auto-fill for responsive columns
+            searchResultsContainer.style.gap = '2rem';
 
             let hasResults = false;
 
-            // Search through all products
+            // Filter product cards based on search term
             productCards.forEach(card => {
-                const productName = card.querySelector('h3').textContent.toLowerCase();
-                const productDescription = card.querySelector('.text-gray-600')?.textContent.toLowerCase() || '';
+                const productNameElement = card.querySelector('h3');
+                const productDescriptionElement = card.querySelector('.text-gray-600'); // Adjust selector if description is elsewhere
                 
+                const productName = productNameElement ? productNameElement.textContent.toLowerCase() : '';
+                const productDescription = productDescriptionElement ? productDescriptionElement.textContent.toLowerCase() : '';
+                
+                // Check if search term is in product name or description
                 if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
-                    // Clone the matching product card
+                    // Clone the matching product card and add to results container
                     const clonedCard = card.cloneNode(true);
-                    searchResultsSubsection.appendChild(clonedCard);
+                    searchResultsContainer.appendChild(clonedCard);
                     hasResults = true;
                 }
             });
 
             // Clear existing products grid and add search results
-            const productsGrid = document.querySelector('.products-grid');
             productsGrid.innerHTML = '';
             
             if (hasResults) {
-                productsGrid.appendChild(searchResultsSubsection);
+                productsGrid.appendChild(searchResultsContainer);
+                // Ensure grid container doesn't force horizontal layout if only one subsection
+                 productsGrid.style.display = 'grid';
+                 productsGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
+                 productsGrid.style.gap = '2rem';
+                 productsGrid.style.transform = 'translateX(0)'; // Reset transform
             } else {
                 // Show "No results found" message
-                const noResultsSubsection = document.createElement('div');
-                noResultsSubsection.className = 'product-subsection';
-                noResultsSubsection.style.width = '100%';
-                noResultsSubsection.style.flexShrink = '0';
-                noResultsSubsection.style.display = 'flex';
-                noResultsSubsection.style.justifyContent = 'center';
-                noResultsSubsection.style.alignItems = 'center';
-                noResultsSubsection.style.height = '200px';
-                noResultsSubsection.innerHTML = `
-                    <div class="text-center">
-                        <h3 class="text-xl font-semibold text-gray-700">No products found</h3>
-                        <p class="text-gray-500 mt-2">Try different keywords or browse all products</p>
-                    </div>
+                const noResultsMessage = document.createElement('div');
+                noResultsMessage.className = 'col-span-full text-center py-10'; // Center message across grid columns
+                noResultsMessage.innerHTML = `
+                    <h3 class="text-xl font-semibold text-gray-700">No products found</h3>
+                    <p class="text-gray-500 mt-2">Try different keywords or browse all products</p>
                 `;
-                productsGrid.appendChild(noResultsSubsection);
+                productsGrid.appendChild(noResultsMessage);
+                // Ensure grid container is flexible for the message
+                 productsGrid.style.display = 'block';
+                 productsGrid.style.gridTemplateColumns = 'none';
+                 productsGrid.style.gap = '0';
+                 productsGrid.style.transform = 'translateX(0)'; // Reset transform
             }
 
             setSearching(false);
@@ -720,20 +738,135 @@
             }
         });
 
-        // Add clear search functionality
+        // Add clear search functionality on focus if empty
         searchInput.addEventListener('focus', () => {
             if (searchInput.value === '') {
-                // Reset to original view
+                // Restore original view
                 const productsGrid = document.querySelector('.products-grid');
-                productsGrid.innerHTML = '';
-                productSubsections.forEach(subsection => {
-                    productsGrid.appendChild(subsection.cloneNode(true));
-                });
-                // Show pagination and resume auto-slide
-                document.querySelector('.pagination').style.display = 'flex';
-                startAutoSlide();
+                productsGrid.innerHTML = originalProductsGridHtml;
+                pagination.style.display = 'flex';
+                 if (typeof startAutoSlide === 'function') { // Check if function exists
+                    startAutoSlide(); // Resume auto-slide
+                }
             }
         });
+
+        // Category button highlighting and Smartphone dropdown persistent visibility
+        const categoryButtons = document.querySelectorAll('.flex.space-x-4 button'); // Selects all buttons in the filter section
+        const allProductsButton = document.getElementById('all-products-button');
+        const smartphoneButton = document.getElementById('smartphone-button');
+        const tabletsButton = document.getElementById('tablets-button');
+        const accessoriesButton = document.getElementById('accessories-button');
+        const smartphoneDropdown = document.getElementById('smartphone-dropdown');
+
+        let isSmartphoneDropdownOpen = false; // Flag to track if dropdown is explicitly open
+
+        function setActiveButton(activeButton) {
+            // Remove active state from all buttons first
+            categoryButtons.forEach(button => {
+                button.classList.remove('bg-indigo-600', 'text-white');
+                // Add back default inactive styles, ensure group button styling is not messed up
+                 if (button !== smartphoneButton) { // Exclude smartphone button from getting default gray styling if it's the group button parent
+                    button.classList.add('bg-gray-100', 'text-gray-700');
+                 }
+            });
+
+            // Add active state to the clicked button
+            activeButton.classList.remove('bg-gray-100', 'text-gray-700');
+            activeButton.classList.add('bg-indigo-600', 'text-white');
+        }
+
+        // Add click listeners to specific buttons
+        allProductsButton.addEventListener('click', () => setActiveButton(allProductsButton));
+        tabletsButton.addEventListener('click', () => setActiveButton(tabletsButton));
+        accessoriesButton.addEventListener('click', () => setActiveButton(accessoriesButton));
+        
+        // Smartphone button hover and click handler for dropdown visibility
+        if (smartphoneButton && smartphoneDropdown) {
+            // Show dropdown on hover
+            smartphoneButton.addEventListener('mouseenter', () => {
+                 if (!isSmartphoneDropdownOpen) { // Only show on hover if not explicitly open
+                     smartphoneDropdown.classList.remove('hidden');
+                 }
+            });
+
+            // Hide dropdown on mouse leave unless mouse enters the dropdown AND it's not explicitly open
+            smartphoneButton.addEventListener('mouseleave', (event) => {
+                 // Use a small delay to allow time for mouse to enter the dropdown
+                 setTimeout(() => {
+                     if (!isSmartphoneDropdownOpen && !smartphoneDropdown.contains(event.relatedTarget)) {
+                         smartphoneDropdown.classList.add('hidden');
+                     }
+                 }, 50);
+            });
+
+             // Keep dropdown open on hover over the dropdown itself if not explicitly open
+            smartphoneDropdown.addEventListener('mouseenter', () => {
+                 if (!isSmartphoneDropdownOpen) {
+                    smartphoneDropdown.classList.remove('hidden');
+                 }
+            });
+
+            // Hide dropdown on mouse leave unless mouse enters the button AND it's not explicitly open
+            smartphoneDropdown.addEventListener('mouseleave', (event) => {
+                // Use a small delay to allow time for mouse to enter the button
+                 setTimeout(() => {
+                      if (!isSmartphoneDropdownOpen && !smartphoneButton.contains(event.relatedTarget)) {
+                          smartphoneDropdown.classList.add('hidden');
+                      }
+                 }, 50);
+            });
+
+            // Click handler to toggle persistence
+             smartphoneButton.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent any default link behavior
+                
+                // Highlight the smartphone button
+                setActiveButton(smartphoneButton);
+
+                // Toggle the explicit open state
+                isSmartphoneDropdownOpen = !isSmartphoneDropdownOpen;
+
+                // Show or hide based on the new state
+                if (isSmartphoneDropdownOpen) {
+                    smartphoneDropdown.classList.remove('hidden');
+                } else {
+                    smartphoneDropdown.classList.add('hidden');
+                }
+                
+                // Prevent the click on the button from closing the dropdown immediately via the document listener
+                event.stopPropagation();
+            });
+
+            // Close the dropdown when clicking outside of it
+            document.addEventListener('click', (event) => {
+                if (!smartphoneButton.contains(event.target) && !smartphoneDropdown.contains(event.target)) {
+                    smartphoneDropdown.classList.add('hidden');
+                    isSmartphoneDropdownOpen = false; // Reset explicit open flag
+                } else if (smartphoneDropdown.classList.contains('hidden') && (smartphoneButton.contains(event.target) || smartphoneDropdown.contains(event.target))) {
+                   // If the dropdown is hidden and we click inside the button or dropdown, it should still appear (handled by click handler)
+                   // This prevents a double-click to close issue.
+                }
+            });
+
+             // Also close dropdown if an option inside is clicked and highlight main button
+             smartphoneDropdown.querySelectorAll('a').forEach(link => {
+                 link.addEventListener('click', () => {
+                      smartphoneDropdown.classList.add('hidden');
+                      isSmartphoneDropdownOpen = false; // Reset explicit open flag
+                      // Highlighting the smartphone button is already handled by the separate link listeners below
+                 });
+             });
+
+             // Add click listeners to the iPhone and Android links to highlight the smartphone button
+             const smartphoneLinks = smartphoneDropdown.querySelectorAll('a');
+             smartphoneLinks.forEach(link => {
+                 link.addEventListener('click', () => {
+                     setActiveButton(smartphoneButton); // Highlight the main smartphone button
+                     // The dropdown closing logic on link click is already handled above this
+                 });
+             });
+        }
     </script>
 </body>
 </html> 
