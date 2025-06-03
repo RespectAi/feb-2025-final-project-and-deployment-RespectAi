@@ -19,7 +19,16 @@
                 
                 <div class="hidden md:flex space-x-8 h-full items-center ml-auto mr-8">
                     <a href="index.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Home</a>
-                    <a href="products.html" class="text-indigo-600 px-3 py-2 text-base font-medium">Products</a>
+                    <div class="relative group">
+                        <a href="products.html" class="text-indigo-600 px-3 py-2 text-base font-medium">Products</a>
+                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                            <a href="smartphones.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50">All Smartphones</a>
+                            <a href="iphones.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50">iPhones</a>
+                            <a href="android.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50">Android</a>
+                            <a href="tablets.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50">Tablets</a>
+                            <a href="accessories.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50">Accessories</a>
+                        </div>
+                    </div>
                     <a href="deals.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Deals</a>
                     <a href="about.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">About</a>
                     <a href="contact.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Contact</a>
@@ -39,6 +48,33 @@
             </div>
         </div>
     </nav>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-4">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-xl font-bold text-gray-800">Your Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="py-4 space-y-4">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+            
+            <div class="border-t pt-4">
+                <div class="flex justify-between mb-4">
+                    <span class="font-semibold">Subtotal:</span>
+                    <span id="cart-subtotal" class="font-bold">$0.00</span>
+                </div>
+                <button onclick="window.location.href='checkout.html'" class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition duration-300">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="toggleCart()"></div>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 py-8">
@@ -204,6 +240,11 @@
     <script src="script.js"></script>
     <script src="cart.js"></script>
     <script>
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+
         // Function to load smartphones
         function loadSmartphones() {
             const productsGrid = document.getElementById('products-grid');
@@ -218,7 +259,10 @@
                     specs: {
                         storage: "256GB",
                         screen: "6.1\"",
-                        camera: "48MP"
+                        camera: "48MP",
+                        battery: "3200mAh",
+                        fingerprint: "Face ID",
+                        display: "OLED"
                     }
                 },
                 {
@@ -228,7 +272,10 @@
                     specs: {
                         storage: "512GB",
                         screen: "6.8\"",
-                        camera: "200MP"
+                        camera: "200MP",
+                        battery: "5000mAh",
+                        fingerprint: "Ultrasonic",
+                        display: "Dynamic AMOLED"
                     }
                 }
             ];
@@ -241,42 +288,59 @@
 
             // Add products to grid
             smartphones.forEach(phone => {
-                const productCard = `
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden product-card transition duration-300">
-                        <div class="relative">
-                            <img src="${phone.image}" alt="${phone.name}" class="w-full h-48 object-cover">
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300';
+                productCard.innerHTML = `
+                    <div class="relative">
+                        <img src="${phone.image}" alt="${phone.name}" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 right-2">
+                            <button class="bg-white/80 hover:bg-white p-2 rounded-full transition-colors duration-200">
+                                <i class="far fa-heart text-gray-600"></i>
+                            </button>
                         </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-lg mb-2">${phone.name}</h3>
-                            <div class="grid grid-cols-3 gap-2 mb-3 text-sm text-gray-600">
-                                <div class="text-center">
-                                    <div class="font-medium">Storage</div>
-                                    <div>${phone.specs.storage}</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-medium">Screen</div>
-                                    <div>${phone.specs.screen}</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-medium">Camera</div>
-                                    <div>${phone.specs.camera}</div>
-                                </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">${phone.name}</h3>
+                        <div class="grid grid-cols-3 gap-2 mb-4">
+                            <div class="text-sm h-12 overflow-hidden group relative">
+                                <span class="text-gray-600 block truncate">Display</span>
+                                <p class="font-medium truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:absolute group-hover:z-10">${phone.specs.display}</p>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-lg">$${phone.price}</span>
-                                <button onclick="addToCart('${phone.name}', ${phone.price}, '${phone.image}')" 
-                                        class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                            <div class="text-sm h-12 overflow-hidden group relative">
+                                <span class="text-gray-600 block truncate">Processor</span>
+                                <p class="font-medium truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:absolute group-hover:z-10">${phone.specs.processor}</p>
                             </div>
+                            <div class="text-sm h-12 overflow-hidden group relative">
+                                <span class="text-gray-600 block truncate">RAM</span>
+                                <p class="font-medium truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:absolute group-hover:z-10">${phone.specs.ram}</p>
+                            </div>
+                            <div class="text-sm h-12 overflow-hidden group relative">
+                                <span class="text-gray-600 block truncate">Storage</span>
+                                <p class="font-medium truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:absolute group-hover:z-10">${phone.specs.storage}</p>
+                            </div>
+                            <div class="text-sm h-12 overflow-hidden group relative">
+                                <span class="text-gray-600 block truncate">Battery</span>
+                                <p class="font-medium truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:absolute group-hover:z-10">${phone.specs.battery}</p>
+                            </div>
+                            <div class="text-sm h-12 overflow-hidden group relative">
+                                <span class="text-gray-600 block truncate">Fingerprint</span>
+                                <p class="font-medium truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:absolute group-hover:z-10">${phone.specs.fingerprint}</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">$${phone.price}</span>
+                            <button onclick="addToCart('${phone.name}', ${phone.price}, '${phone.image}')" 
+                                    class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                 `;
-                productsGrid.innerHTML += productCard;
+                productsGrid.appendChild(productCard);
             });
         }
 
-        // Load products when page loads
+        // Load smartphones when page loads
         document.addEventListener('DOMContentLoaded', loadSmartphones);
 
         // Navbar scroll effect
