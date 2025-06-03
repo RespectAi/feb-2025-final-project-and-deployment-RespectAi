@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessories - TechMobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav id="main-navbar" class="bg-white/70 backdrop-blur-lg shadow-lg sticky top-0 z-50 transition-all duration-300 h-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-indigo-600">TechMobile</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-8 h-full items-center ml-auto mr-8">
+                    <a href="index.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Home</a>
+                    <a href="products.html" class="text-indigo-600 px-3 py-2 text-base font-medium">Products</a>
+                    <a href="deals.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Deals</a>
+                    <a href="about.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Contact</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button onclick="toggleCart()" class="text-gray-700 hover:text-indigo-600">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        </button>
+                    </div>
+                    <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-indigo-600 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar Filters -->
+            <div class="w-full md:w-64 flex-shrink-0">
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h2 class="text-lg font-semibold mb-4">Filters</h2>
+                    
+                    <!-- Category Filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-2">Category</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Cases & Covers</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Chargers & Cables</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Screen Protectors</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Power Banks</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Headphones & Earbuds</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-2">Price Range</h3>
+                        <div class="space-y-2">
+                            <input type="range" min="0" max="500" class="w-full">
+                            <div class="flex justify-between text-sm text-gray-600">
+                                <span>$0</span>
+                                <span>$500</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Brand -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-2">Brand</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Apple</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Samsung</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Anker</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Spigen</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Compatibility -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-2">Compatibility</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">iPhone</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Samsung</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-indigo-600">
+                                <span class="ml-2">Universal</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="flex-1">
+                <!-- Sort Options -->
+                <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-gray-600">Sort by:</span>
+                            <select class="border rounded-md px-3 py-1">
+                                <option>Featured</option>
+                                <option>Price: Low to High</option>
+                                <option>Price: High to Low</option>
+                                <option>Newest First</option>
+                            </select>
+                        </div>
+                        <div class="text-gray-600">
+                            <span id="product-count">0</span> products
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="products-grid">
+                    <!-- Product cards will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Function to load accessories
+        function loadAccessories() {
+            const productsGrid = document.getElementById('products-grid');
+            const productCount = document.getElementById('product-count');
+            
+            // Placeholder data - replace with actual database data later
+            const accessories = [
+                {
+                    name: "AirPods Pro 2nd Gen",
+                    price: 249,
+                    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQD83?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1660803972361",
+                    specs: {
+                        type: "Wireless Earbuds",
+                        compatibility: "Universal",
+                        features: "Noise Cancelling"
+                    }
+                },
+                {
+                    name: "Samsung 25W Super Fast Charger",
+                    price: 29.99,
+                    image: "https://images.samsung.com/is/image/samsung/p6pim/uk/2108/gallery/uk-galaxy-s21-5g-g991-sm-g991bzadeub-481199199",
+                    specs: {
+                        type: "Charger",
+                        compatibility: "Universal",
+                        features: "25W Fast Charging"
+                    }
+                }
+            ];
+
+            // Update product count
+            productCount.textContent = accessories.length;
+
+            // Clear existing products
+            productsGrid.innerHTML = '';
+
+            // Add products to grid
+            accessories.forEach(accessory => {
+                const productCard = `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden product-card transition duration-300">
+                        <div class="relative">
+                            <img src="${accessory.image}" alt="${accessory.name}" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2">${accessory.name}</h3>
+                            <div class="grid grid-cols-3 gap-2 mb-3 text-sm text-gray-600">
+                                <div class="text-center">
+                                    <div class="font-medium">Type</div>
+                                    <div>${accessory.specs.type}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-medium">Compatibility</div>
+                                    <div>${accessory.specs.compatibility}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-medium">Features</div>
+                                    <div>${accessory.specs.features}</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-lg">$${accessory.price}</span>
+                                <button onclick="addToCart('${accessory.name}', ${accessory.price}, '${accessory.image}')" 
+                                        class="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productsGrid.innerHTML += productCard;
+            });
+        }
+
+        // Load products when page loads
+        document.addEventListener('DOMContentLoaded', loadAccessories);
+    </script>
+</body>
+</html> 

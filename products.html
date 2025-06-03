@@ -97,33 +97,19 @@
         <section class="bg-white py-6 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <div class="flex space-x-4">
-                        <button id="all-products-button" class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300">All Products</button>
-                        <div class="relative group">
-                            <button id="smartphone-button" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300 flex items-center">
-                                Smartphones
-                                <i class="fas fa-chevron-down ml-2 text-sm"></i>
-                            </button>
-                            <div id="smartphone-dropdown" class="absolute left-0 mt-2 w-96 bg-white rounded-lg shadow-lg py-2 hidden z-50">
-                                <div class="grid grid-cols-2 gap-4 p-4">
-                                    <a href="#" class="flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">
-                                        <i class="fab fa-apple text-lg mr-2"></i>
-                                        <span>iPhone</span>
-                                    </a>
-                                    <a href="#" class="flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">
-                                        <i class="fab fa-android text-lg mr-2"></i>
-                                        <span>Android</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="tablets-button" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Tablets</button>
-                        <button id="accessories-button" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Accessories</button>
+                    <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                        <button id="all-products-button" class="px-3 py-2 text-sm md:text-base rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300">All Products</button>
+                        <a href="smartphones.html" class="px-3 py-2 text-sm md:text-base rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300 flex items-center">
+                            Smartphones
+                            <i class="fas fa-chevron-right ml-2 text-xs md:text-sm"></i>
+                        </a>
+                        <a href="tablets.html" class="px-3 py-2 text-sm md:text-base rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Tablets</a>
+                        <a href="accessories.html" class="px-3 py-2 text-sm md:text-base rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition duration-300">Accessories</a>
                     </div>
-                    <div class="relative">
-                        <input type="text" id="searchInput" placeholder="Search products..." class="pl-10 pr-16 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                        <button id="searchButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 transition duration-300 flex items-center">
+                    <div class="relative w-full md:w-auto mt-4 md:mt-0">
+                        <input type="text" id="searchInput" placeholder="Search products..." class="w-full md:w-64 pl-10 pr-16 py-2 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm md:text-base"></i>
+                        <button id="searchButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-600 text-white px-2 py-1 text-sm md:text-base rounded-md hover:bg-indigo-700 transition duration-300 flex items-center">
                             <span id="searchButtonText">Search</span>
                             <div id="searchSpinner" class="hidden ml-2">
                                 <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -143,7 +129,7 @@
                 <div class="products-container" style="overflow: hidden;">
                     <div class="products-grid" style="display: flex; transition: transform 0.5s ease-in-out;">
                         <!-- First Subsection (Products 1-4) -->
-                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                             <!-- Product 1 -->
                             <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
                                 <div class="relative">
@@ -248,7 +234,7 @@
                         </div>
 
                         <!-- Second Subsection (Products 5-8) -->
-                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                             <!-- Product 5 -->
                             <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
                                 <img src="https://m.media-amazon.com/images/I/61FSdNdMT6L._AC_SL1500_.jpg" alt="smartwatch" class="w-full h-48 object-cover">
@@ -347,7 +333,7 @@
                         </div>
 
                         <!-- Third Subsection (Products 9-12) -->
-                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                        <div class="product-subsection" style="width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                             <!-- Product 9 -->
                             <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
                                 <img src="https://photos5.appleinsider.com/gallery/61288-126615-60842-125275-60106-123358-60078-123295-59304-121043-000-lede-M4-MacBook-Pro-xl-xl-xl-xl-xl.jpg" alt="MacBook Pro M4" class="w-full h-48 object-cover">
@@ -646,14 +632,12 @@
         async function performSearch() {
             const searchTerm = searchInput.value.toLowerCase().trim();
             const productsGrid = document.querySelector('.products-grid');
-            const productCards = document.querySelectorAll('.product-card'); // Get all existing product cards
+            const productCards = document.querySelectorAll('.product-card');
 
             if (searchTerm === '') {
-                // If search is empty, restore original products and pagination
                 productsGrid.innerHTML = originalProductsGridHtml;
                 pagination.style.display = 'flex';
-                // Assuming startAutoSlide needs to be called to resume animation if pagination is shown
-                if (typeof startAutoSlide === 'function') { // Check if function exists
+                if (typeof startAutoSlide === 'function') {
                     startAutoSlide();
                 }
                 setSearching(false);
@@ -661,70 +645,55 @@
             }
 
             setSearching(true);
-
-            // Clear any existing auto-slide intervals before search
-            if (typeof autoSlideInterval !== 'undefined') { // Check if variable exists
-                clearInterval(autoSlideInterval);
-            }
-            
-            // Hide pagination during search
+            clearInterval(autoSlideInterval);
             pagination.style.display = 'none';
 
-            // Simulate a small delay to show the loading state
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Create a container for search results
             const searchResultsContainer = document.createElement('div');
-            searchResultsContainer.className = 'product-subsection'; // Reuse subsection class for layout
+            searchResultsContainer.className = 'product-subsection';
             searchResultsContainer.style.width = '100%';
             searchResultsContainer.style.flexShrink = '0';
             searchResultsContainer.style.display = 'grid';
-            searchResultsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))'; // Use auto-fill for responsive columns
-            searchResultsContainer.style.gap = '2rem';
+            searchResultsContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+            searchResultsContainer.style.gap = '1rem';
 
             let hasResults = false;
 
-            // Filter product cards based on search term
             productCards.forEach(card => {
                 const productNameElement = card.querySelector('h3');
-                const productDescriptionElement = card.querySelector('.text-gray-600'); // Adjust selector if description is elsewhere
+                const productDescriptionElement = card.querySelector('.text-gray-600');
                 
                 const productName = productNameElement ? productNameElement.textContent.toLowerCase() : '';
                 const productDescription = productDescriptionElement ? productDescriptionElement.textContent.toLowerCase() : '';
                 
-                // Check if search term is in product name or description
                 if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
-                    // Clone the matching product card and add to results container
                     const clonedCard = card.cloneNode(true);
                     searchResultsContainer.appendChild(clonedCard);
                     hasResults = true;
                 }
             });
 
-            // Clear existing products grid and add search results
             productsGrid.innerHTML = '';
             
             if (hasResults) {
                 productsGrid.appendChild(searchResultsContainer);
-                // Ensure grid container doesn't force horizontal layout if only one subsection
-                 productsGrid.style.display = 'grid';
-                 productsGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
-                 productsGrid.style.gap = '2rem';
-                 productsGrid.style.transform = 'translateX(0)'; // Reset transform
+                productsGrid.style.display = 'grid';
+                productsGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+                productsGrid.style.gap = '1rem';
+                productsGrid.style.transform = 'translateX(0)';
             } else {
-                // Show "No results found" message
                 const noResultsMessage = document.createElement('div');
-                noResultsMessage.className = 'col-span-full text-center py-10'; // Center message across grid columns
+                noResultsMessage.className = 'col-span-full text-center py-10';
                 noResultsMessage.innerHTML = `
                     <h3 class="text-xl font-semibold text-gray-700">No products found</h3>
                     <p class="text-gray-500 mt-2">Try different keywords or browse all products</p>
                 `;
                 productsGrid.appendChild(noResultsMessage);
-                // Ensure grid container is flexible for the message
-                 productsGrid.style.display = 'block';
-                 productsGrid.style.gridTemplateColumns = 'none';
-                 productsGrid.style.gap = '0';
-                 productsGrid.style.transform = 'translateX(0)'; // Reset transform
+                productsGrid.style.display = 'block';
+                productsGrid.style.gridTemplateColumns = 'none';
+                products.style.gap = '0';
+                products.style.transform = 'translateX(0)';
             }
 
             setSearching(false);
@@ -867,6 +836,81 @@
                  });
              });
         }
+
+        // Add responsive handling for mobile devices
+        function handleResponsiveLayout() {
+            const isMobile = window.innerWidth < 768;
+            const productsGrid = document.querySelector('.products-grid');
+            const subsections = document.querySelectorAll('.product-subsection');
+            
+            if (isMobile) {
+                // On mobile, stack all products vertically
+                productsGrid.style.display = 'block';
+                productsGrid.style.transform = 'none';
+                subsections.forEach(subsection => {
+                    subsection.style.width = '100%';
+                    subsection.style.display = 'grid';
+                    subsection.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+                    subsection.style.gap = '1rem';
+                });
+                
+                // Hide pagination on mobile
+                pagination.style.display = 'none';
+                
+                // Clear auto-slide interval
+                clearInterval(autoSlideInterval);
+            } else {
+                // Restore desktop layout
+                productsGrid.style.display = 'flex';
+                subsections.forEach(subsection => {
+                    subsection.style.width = '100%';
+                    subsection.style.display = 'grid';
+                    subsection.style.gridTemplateColumns = 'repeat(4, 1fr)';
+                    subsection.style.gap = '2rem';
+                });
+                
+                // Show pagination on desktop
+                pagination.style.display = 'flex';
+                
+                // Restart auto-slide
+                startAutoSlide();
+            }
+        }
+
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResponsiveLayout);
+
+        // Call handleResponsiveLayout on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            handleResponsiveLayout();
+            // ... rest of your DOMContentLoaded code ...
+        });
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+
+                // Close mobile menu when window is resized to desktop size
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth >= 768) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html> 
