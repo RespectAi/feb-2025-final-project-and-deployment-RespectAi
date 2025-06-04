@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - TechMobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav id="main-navbar" class="bg-white/70 backdrop-blur-lg shadow-lg sticky top-0 z-50 transition-all duration-300 h-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-indigo-600">TechMobile</a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 h-full items-center ml-auto mr-8">
+                    <a href="index.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Home</a>
+                    <a href="products.html" class="text-indigo-600 px-3 py-2 text-base font-medium">Products</a>
+                    <a href="deals.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Deals</a>
+                    <a href="about.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium">Contact</a>
+                </div>
+                
+                <!-- Cart & Mobile Menu -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button onclick="toggleCart()" class="text-gray-700 hover:text-indigo-600">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        </button>
+                    </div>
+                    <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-indigo-600 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">Home</a>
+                <a href="products.html" class="text-indigo-600 block px-3 py-2 text-base font-medium">Products</a>
+                <a href="deals.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">Deals</a>
+                <a href="about.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">About</a>
+                <a href="contact.html" class="text-gray-700 hover:text-indigo-600 block px-3 py-2 text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Shopping Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex flex-col gap-8">
+                <!-- Order Summary -->
+                <div class="bg-white rounded-lg">
+                    <div id="cart-items" class="space-y-4 mb-6">
+                        <!-- Cart items will be displayed here -->
+                    </div>
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span id="cart-subtotal" class="font-semibold">$0.00</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-600">Shipping</span>
+                            <span class="font-semibold">$10.00</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-600">Tax</span>
+                            <span id="cart-tax" class="font-semibold">$0.00</span>
+                        </div>
+                        <div class="border-t pt-4 mt-4">
+                            <div class="flex justify-between">
+                                <span class="text-lg font-bold">Total</span>
+                                <span id="cart-total" class="text-lg font-bold">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="proceedToCheckout()" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="toggleCart()"></div>
+
+    <!-- Main Content -->
+    <main class="page-transition py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Our Products</h1>
+                <p class="text-xl text-gray-600">Discover our latest collection of premium tech gadgets</p>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button onclick="filterProducts('all')" class="category-filter active px-6 py-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300">
+                    All Products
+                </button>
+                <button onclick="filterProducts('iphones')" class="category-filter px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300">
+                    iPhones
+                </button>
+                <button onclick="filterProducts('android')" class="category-filter px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300">
+                    Android
+                </button>
+                <button onclick="filterProducts('tablets')" class="category-filter px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300">
+                    Tablets
+                </button>
+                <button onclick="filterProducts('accessories')" class="category-filter px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300">
+                    Accessories
+                </button>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                <p class="mt-4 text-gray-600">Loading products...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">TechMobile</h3>
+                    <p class="text-gray-400">Your trusted destination for premium tech gadgets and exceptional service.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="products.html" class="text-gray-400 hover:text-white">Products</a></li>
+                        <li><a href="deals.html" class="text-gray-400 hover:text-white">Deals</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Shipping</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 TechMobile. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { productsAPI, cartAPI } from './lib/supabase.js';
+
+        let allProducts = [];
+        let currentCategory = 'all';
+
+        // Load products on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            loadCartItems();
+        });
+
+        async function loadProducts() {
+            try {
+                const loading = document.getElementById('loading');
+                const productsGrid = document.getElementById('products-grid');
+                
+                loading.style.display = 'block';
+                productsGrid.innerHTML = '';
+
+                allProducts = await productsAPI.getAll();
+                displayProducts(allProducts);
+                
+                loading.style.display = 'none';
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('loading').innerHTML = '<p class="text-red-600">Error loading products. Please try again later.</p>';
+            }
+        }
+
+        async function loadCartItems() {
+            try {
+                const cartItems = await cartAPI.getItems();
+                const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                document.getElementById('cart-count').textContent = totalItems;
+            } catch (error) {
+                console.error('Error loading cart items:', error);
+            }
+        }
+
+        function displayProducts(products) {
+            const productsGrid = document.getElementById('products-grid');
+            
+            if (products.length === 0) {
+                productsGrid.innerHTML = '<div class="col-span-full text-center py-12"><p class="text-gray-600">No products found in this category.</p></div>';
+                return;
+            }
+
+            productsGrid.innerHTML = products.map(product => `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-4">${product.description || 'Premium quality product'}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-indigo-600">$${product.price.toFixed(2)}</span>
+                            <button onclick="addToCartFromProduct('${product.id}')" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">
+                                <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                            </button>
+                        </div>
+                        ${product.stock_quantity <= 5 ? `<p class="text-orange-600 text-sm mt-2">Only ${product.stock_quantity} left in stock!</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function filterProducts(category) {
+            currentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-filter').forEach(btn => {
+                btn.classList.remove('active', 'bg-indigo-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            event.target.classList.add('active', 'bg-indigo-600', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+
+            try {
+                const loading = document.getElementById('loading');
+                const productsGrid = document.getElementById('products-grid');
+                
+                loading.style.display = 'block';
+                productsGrid.innerHTML = '';
+
+                let filteredProducts;
+                if (category === 'all') {
+                    filteredProducts = allProducts;
+                } else {
+                    filteredProducts = allProducts.filter(product => product.category === category);
+                }
+
+                displayProducts(filteredProducts);
+                loading.style.display = 'none';
+            } catch (error) {
+                console.error('Error filtering products:', error);
+            }
+        }
+
+        async function addToCartFromProduct(productId) {
+            try {
+                await cartAPI.addItem(productId, 1);
+                await loadCartItems();
+                
+                // Show notification
+                const product = allProducts.find(p => p.id === productId);
+                showNotification(`${product.name} added to cart!`);
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showNotification('Error adding item to cart');
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-0 z-50';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.transform = 'translateY(100%)';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const cartOverlay = document.getElementById('cart-overlay');
+            
+            if (cartSidebar && cartOverlay) {
+                const isOpen = !cartSidebar.classList.contains('translate-x-full');
+                
+                if (isOpen) {
+                    cartSidebar.classList.add('translate-x-full');
+                    cartOverlay.classList.add('hidden');
+                } else {
+                    cartSidebar.classList.remove('translate-x-full');
+                    cartOverlay.classList.remove('hidden');
+                    loadCartSidebar();
+                }
+            }
+        }
+
+        async function loadCartSidebar() {
+            try {
+                const cartItems = await cartAPI.getItems();
+                const cartItemsContainer = document.getElementById('cart-items');
+                const cartSubtotal = document.getElementById('cart-subtotal');
+                const cartTax = document.getElementById('cart-tax');
+                const cartTotal = document.getElementById('cart-total');
+                
+                cartItemsContainer.innerHTML = '';
+                let subtotal = 0;
+
+                cartItems.forEach((item) => {
+                    const price = item.products.price;
+                    const name = item.products.name;
+                    const image = item.products.image_url;
+                    
+                    subtotal += price * item.quantity;
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex items-center justify-between py-2 border-b';
+                    itemElement.innerHTML = `
+                        <div class="flex items-center space-x-4">
+                            <img src="${image}" alt="${name}" class="w-16 h-16 object-cover rounded">
+                            <div>
+                                <h4 class="font-medium">${name}</h4>
+                                <p class="text-gray-600">$${price.toFixed(2)} x ${item.quantity}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCartSidebar('${item.id}')" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
+                });
+
+                const tax = subtotal * 0.08;
+                const shipping = subtotal > 0 ? 10 : 0;
+                const total = subtotal + tax + shipping;
+
+                cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+                cartTax.textContent = `$${tax.toFixed(2)}`;
+                cartTotal.textContent = `$${total.toFixed(2)}`;
+            } catch (error) {
+                console.error('Error loading cart sidebar:', error);
+            }
+        }
+
+        async function removeFromCartSidebar(itemId) {
+            try {
+                await cartAPI.removeItem(itemId);
+                await loadCartItems();
+                await loadCartSidebar();
+            } catch (error) {
+                console.error('Error removing from cart:', error);
+            }
+        }
+
+        function proceedToCheckout() {
+            toggleCart();
+            window.location.href = 'checkout.html';
+        }
+
+        // Make functions available globally
+        window.filterProducts = filterProducts;
+        window.addToCartFromProduct = addToCartFromProduct;
+        window.toggleCart = toggleCart;
+        window.removeFromCartSidebar = removeFromCartSidebar;
+        window.proceedToCheckout = proceedToCheckout;
+
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
