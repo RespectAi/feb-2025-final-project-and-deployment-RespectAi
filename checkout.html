@@ -249,66 +249,45 @@
     </footer>
 
     <script src="script.js"></script>
-    <script type="module">
-    import { cartAPI, ordersAPI } from './lib/supabase.js';
-
+    <script>
     // Cart functionality
-    let cartItems = [];
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartCount = document.getElementById('cart-count');
+    const checkoutItems = document.getElementById('checkout-items');
+    const subtotalElement = document.getElementById('checkout-subtotal');
+    const taxElement = document.getElementById('checkout-tax');
+    const totalElement = document.getElementById('checkout-total');
 
     // Update cart count on page load
     document.addEventListener('DOMContentLoaded', function() {
-        loadCartItems();
+        updateCartCount();
+        updateCheckoutItems();
     });
 
-    async function loadCartItems() {
-        try {
-            cartItems = await cartAPI.getItems();
-            updateCartCount();
-            updateCheckoutItems();
-        } catch (error) {
-            console.error('Error loading cart items:', error);
-            // Fallback to localStorage
-            cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            updateCartCount();
-            updateCheckoutItems();
-        }
-    }
-
     function updateCartCount() {
-        const cartCount = document.getElementById('cart-count');
         if (cartCount) {
-            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
+            cartCount.textContent = cartItems.length;
         }
     }
 
     function updateCheckoutItems() {
-        const checkoutItems = document.getElementById('checkout-items');
-        const subtotalElement = document.getElementById('checkout-subtotal');
-        const taxElement = document.getElementById('checkout-tax');
-        const totalElement = document.getElementById('checkout-total');
-
         if (checkoutItems) {
             checkoutItems.innerHTML = '';
             let subtotal = 0;
 
             cartItems.forEach((item, index) => {
-                const price = item.products ? item.products.price : item.price;
-                const name = item.products ? item.products.name : item.name;
-                const image = item.products ? item.products.image_url : item.image;
-                
-                subtotal += price * item.quantity;
+                subtotal += item.price;
                 const itemElement = document.createElement('div');
                 itemElement.className = 'flex items-center justify-between py-2 border-b';
                 itemElement.innerHTML = `
                     <div class="flex items-center space-x-4">
-                        <img src="${image}" alt="${name}" class="w-16 h-16 object-cover rounded">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
                         <div>
-                            <h4 class="font-medium">${name}</h4>
-                            <p class="text-gray-600">$${price.toFixed(2)} x ${item.quantity}</p>
+                            <h4 class="font-medium">${item.name}</h4>
+                            <p class="text-gray-600">$${item.price.toFixed(2)}</p>
                         </div>
                     </div>
-                    <button onclick="removeFromCheckout('${item.id || index}')" class="text-red-500 hover:text-red-700">
+                    <button onclick="removeFromCheckout(${index})" class="text-red-500 hover:text-red-700">
                         <i class="fas fa-trash"></i>
                     </button>
                 `;
@@ -327,102 +306,25 @@
         }
     }
 
-    async function removeFromCheckout(itemId) {
-        try {
-            if (typeof itemId === 'string' && itemId.length > 10) {
-                await cartAPI.removeItem(itemId);
-            } else {
-                cartItems.splice(parseInt(itemId), 1);
-                localStorage.setItem('cart', JSON.stringify(cartItems));
-            }
-            await loadCartItems();
-        } catch (error) {
-            console.error('Error removing from checkout:', error);
-        }
+    function removeFromCheckout(index) {
+        cartItems.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        updateCheckoutItems();
+        updateCartCount();
     }
 
-    async function processOrder() {
-        try {
-            // Get form data
-            const form = document.querySelector('form');
-            const formData = new FormData(form);
-            
-            // Validate form
-            let isValid = true;
-            const requiredFields = ['first-name', 'last-name', 'email', 'address', 'city', 'state', 'zip', 'card-number', 'expiry', 'cvv'];
-            
-            requiredFields.forEach(field => {
-                const input = document.getElementById(field);
-                if (!input.value.trim()) {
-                    isValid = false;
-                    input.classList.add('border-red-500');
-                } else {
-                    input.classList.remove('border-red-500');
-                }
-            });
-
-            if (!isValid) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            if (cartItems.length === 0) {
-                alert('Your cart is empty');
-                return;
-            }
-
-            // Prepare order data
-            const orderData = {
-                shippingAddress: {
-                    firstName: formData.get('first-name'),
-                    lastName: formData.get('last-name'),
-                    email: formData.get('email'),
-                    address: formData.get('address'),
-                    city: formData.get('city'),
-                    state: formData.get('state'),
-                    zip: formData.get('zip')
-                },
-                billingAddress: {
-                    firstName: formData.get('first-name'),
-                    lastName: formData.get('last-name'),
-                    email: formData.get('email'),
-                    address: formData.get('address'),
-                    city: formData.get('city'),
-                    state: formData.get('state'),
-                    zip: formData.get('zip')
-                }
-            };
-
-            // Show processing message
-            const button = document.querySelector('button[onclick="processOrder()"]');
-            const originalText = button.textContent;
-            button.textContent = 'Processing...';
-            button.disabled = true;
-
-            // Create order in Supabase
-            const order = await ordersAPI.createOrder(orderData);
-            
-            // Show success message
-            alert(`Order placed successfully! Order ID: ${order.id}`);
-            
-            // Redirect to home page
-            window.location.href = 'index.html';
-            
-        } catch (error) {
-            console.error('Error processing order:', error);
-            alert('Error processing order. Please try again.');
-            
-            // Reset button
-            const button = document.querySelector('button[onclick="processOrder()"]');
-            button.textContent = 'Place Order';
-            button.disabled = false;
-        }
+    function processOrder() {
+        // Clear cart after successful order
+        localStorage.removeItem('cart');
+        cartItems = [];
+        updateCartCount();
+        
+        // Show success message
+        alert('Order placed successfully!');
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
     }
-
-    // Make functions available globally
-    window.removeFromCheckout = removeFromCheckout;
-    window.processOrder = processOrder;
-    window.loadCartItems = loadCartItems;
 
     // Navbar scroll effect
     let lastScrollY = window.scrollY;
@@ -444,6 +346,6 @@
             ticking = true;
         }
     });
-</script>
+    </script>
 </body>
-</html>
+</html> 
